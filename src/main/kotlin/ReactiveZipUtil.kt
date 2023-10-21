@@ -39,7 +39,7 @@ fun zip(
                         .toFlux()
                         .doOnSubscribe { zipStream.putNextEntry(ZipEntry(zipEntryName)) }
                         .doOnNext { zipStream.write(it) }
-                        .flatMap { Flux.empty<DataBuffer>() }
+                        .thenMany(Flux.empty<DataBuffer>())
                         .subscribeOn(Schedulers.boundedElastic())
                 }
                 .doFinally { pipe.sink().close() }

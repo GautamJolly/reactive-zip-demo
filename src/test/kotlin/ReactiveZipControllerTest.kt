@@ -84,7 +84,7 @@ class ReactiveZipControllerTest {
                 val f1 = DataBufferUtils.write(this, pipe.sink())
                     .doOnNext(DataBufferUtils.releaseConsumer())
                     .doFinally { pipe.sink().close() }
-                    .flatMap { Flux.empty<String>() }
+                    .thenMany(Flux.empty<String>())
                     .subscribeOn(Schedulers.boundedElastic())
 
                 // create a flux that reads content from the pipe's source-channel, unzipping it in the process
